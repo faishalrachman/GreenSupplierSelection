@@ -1,0 +1,24 @@
+.judul {
+    display: flex;
+}
+
+.inijudul {
+    flex: 1;
+}
+
+h1 {
+    font-family: Orienta;
+    font-style: normal;
+    font-weight: normal;
+    line-height: normal;
+    font-size: 36px;
+    text-align: center;
+    color: #ffffff;
+    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), 0px 4px 4px rgba(0, 0, 0, 0.25), 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+input.small-box{
+    width: 5%;
+}
+.m-5{
+    margin-left: 10px;
+}
