@@ -18,10 +18,10 @@
     </div>
 
     <div class="row">
-      <div class="col-sm-3" v-for="(item, index) in topics">
+      <div class="col-sm-3" v-for="(item, index) in topics" v-bind:key="index">
         <div class="card">
           <div class="card-block">
-            <h4 class="card-title">{{item.topic_name}}</h4>
+            <h4 class="card-title">{{index+1}} - {{item.topic_name}}</h4>
             <img
               src="https://cdn1-production-images-kly.akamaized.net/mOZUp43JdgTW79O38CXC1aCocBc=/640x360/smart/filters:quality(75):strip_icc():format(jpeg)/kly-media-production/medias/1837441/original/048389900_1516342876-aswdFDEAGS.jpg"
               class="img-fluid"
@@ -44,9 +44,7 @@ export default {
           topic_id: 1,
           topic_name: "hihihahahahahaha",
           topic_desc: "bacot adit",
-          num_alternatives: 1,
           alternatives: [],
-          num_criteria: 1,
           criterias: []
         },
         {
@@ -74,14 +72,15 @@ export default {
     };
   },
   methods: {
-    moveTo(index){
-      this.$session.set("topic",this.topics[index])
-      this.$router.push("alternative")
+    moveTo(index) {
+      this.$session.set("topic", this.topics[index]);
+      this.$router.push("alternative");
     }
   },
   created() {
     //  this.$session.set("topicData",this.topics)
-    this.topics = this.$session.get("topicData");
+    // this.topics = this.$session.get("topicData");
+
   }
 };
 </script>
