@@ -42,7 +42,7 @@
             </div>
 
             <!-- Simbol criteria -->
-            <div class="col-md-12 judul">
+            <div class="col-md-12 judul" v-if="topic.criterias.length > 0">
               <div class="col-md-6">
                 <table class="table" style="text-align: center;vertical-align: top;">
                   <thead>
@@ -129,10 +129,10 @@
                 <center>
                   <label class="col-md-4">Symbol Criteria</label>
                 </center>
+
                 <select
                   class="form-control m-t-30"
                   v-model="menu.selectedCriteria"
-                  @change="changedCriteria"
                 >
                   <option
                     v-for="(data, index) in topic.criterias"
@@ -140,118 +140,65 @@
                     v-bind:value="index"
                   >{{data.symbol}} - {{data.criteria}}</option>
                 </select>
-                <div
-                  v-if="topic.criterias.length > 0 && topic.criterias[this.menu.selectedCriteria].sub_criterias.length > 0"
+              </div>
+              <div class="form-group">
+                <center>
+                  <label class="col-md-4">Symbol Sub-Criteria</label>
+                </center>
+
+                <select
+                  class="form-control m-t-30"
+                  v-model="menu.selectedSubCriteria"
                 >
-                  <center>
-                    <label class="col-md-6 m-t-30">Symbol Sub-Criteria</label>
-                  </center>
-                  <select class="form-control" v-model="menu.selectedSubCriteria">
-                    <option
-                      v-for="(data2, index2) in topic.criterias[menu.selectedCriteria].sub_criterias"
-                      v-bind:value="index2"
-                      v-bind:key="index2"
-                    >{{data2.symbol}} - {{data2.sub_criteria}}</option>
-                  </select>
-                </div>
+                  <option
+                    v-for="(data, index) in topic.criterias[menu.selectedCriteria].sub_criterias"
+                    v-bind:key="index"
+                    v-bind:value="index"
+                  >{{data.symbol}} - {{data.sub_criteria}}</option>
+                </select>
+
               </div>
               <div class="form-group">
                 <label class="col-md-5 m-t-30" style="margin-left:30%">Performance Indicator</label>
                 <br>
-                <!-- PI tanpa sub criteria -->
                 <textarea
-                  v-if="topic.criterias[menu.selectedCriteria].sub_criterias.length == 0"
                   class="form-control"
                   name="indicator"
                   cols="20"
                   rows="5"
-                  v-model="topic.criterias[menu.selectedCriteria].performance_indicator"
-                ></textarea>
-                <!-- PI dengan sub criteria -->
-                <textarea
-                  v-if="topic.criterias[menu.selectedCriteria].sub_criterias.length > 0"
-                  class="form-control"
-                  name="indicator"
-                  cols="20"
-                  rows="5"
-                  v-model="topic.criterias[menu.selectedCriteria].sub_criterias[menu.selectedSubCriteria].performance_indicator"
+                  v-model="dataCriteria().performance_indicator"
                 ></textarea>
                 <label class="col-md-5 m-t-30" style="margin-left: 30%">Measurement Method</label>
                 <br>
-                <!-- measurement tanpa sub criteria -->
-                <textarea
-                  v-if="topic.criterias[menu.selectedCriteria].sub_criterias.length == 0"
-                  class="form-control"
-                  name="indicator"
-                  cols="20"
-                  rows="5"
-                  v-model="topic.criterias[menu.selectedCriteria].measurement_method"
-                ></textarea>
                 <!-- measurement dengan sub criteria -->
                 <textarea
-                  v-if="topic.criterias[menu.selectedCriteria].sub_criterias.length > 0"
                   class="form-control"
                   name="indicator"
                   cols="20"
                   rows="5"
-                  v-model="topic.criterias[menu.selectedCriteria].sub_criterias[menu.selectedSubCriteria].measurement_method"
+                  v-model="dataCriteria().measurement_method"
                 ></textarea>
                 <br>
               </div>
               <!-- Expert tanpa sub criteria -->
-              <div class="form-group" v-if="topic.criterias[menu.selectedCriteria].sub_criterias.length == 0">
+              <div
+                class="form-group">
                 <label class="col-md-5 m-t-30">Number of Expert</label>
                 <input
                   type="number"
                   class="col-md-2 form-control"
-                  v-model="topic.criterias[menu.selectedCriteria].experts.length"
+                  v-model="experts().length"
                 >
                 <button
                   class="btn btn-primary m-r-10 m-l-10"
-                  @click="topic.criterias[menu.selectedCriteria].experts.splice(-1,1)"
+                  @click="experts().splice(-1,1)"
                 >-</button>
-                <button class="btn btn-primary" @click="addExpertCriteria">+</button>
+                <button class="btn btn-primary" @click="addExpert">+</button>
                 <br>
-                <div v-if="topic.criterias[menu.selectedCriteria].experts.length > 0">
+                <div v-if="experts().length > 0">
                   <div
                     class="m-l-10"
-                    v-for="(data2, index2) in topic.criterias[menu.selectedCriteria].experts"
-                    v-bind:key="index2"
-                  >
-                    <label class="m-t-10">Background of Expert {{index2+1}}</label>
-                    <textarea
-                      class="form-control"
-                      name="indicator"
-                      id
-                      cols="30"
-                      rows="5"
-                      v-model="data2.description"
-                    ></textarea>
-                    <br>
-                    <label class="col-md-5 m-t-10">Weight of Expert {{index2+1}}</label>
-                    <input type="number" class="form-control col-md-3" v-model="data2.weight">
-                  </div>
-                  <br>
-                </div>
-              </div>
-              <!-- expert dengan sub criteria -->   
-              <div class="form-group" v-if="topic.criterias[menu.selectedCriteria].sub_criterias.length > 0">
-                <label class="col-md-5 m-t-30">Number of Expert</label>
-                <input
-                  type="number"
-                  class="col-md-2 form-control"
-                  v-model="topic.criterias[menu.selectedCriteria].sub_criterias[menu.selectedSubCriteria].experts.length"
-                >
-                <button
-                  class="btn btn-primary m-r-10 m-l-10"
-                  @click="topic.criterias[menu.selectedCriteria].sub_criterias[menu.selectedSubCriteria].experts.splice(-1,1)"
-                >-</button>
-                <button class="btn btn-primary" @click="addExpertSubCriteria">+</button>
-                <br>
-                <div v-if="topic.criterias[menu.selectedCriteria].sub_criterias[menu.selectedSubCriteria].experts.length > 0">
-                  <div
-                    class="m-l-10"
-                    v-for="(data2, index2) in topic.criterias[menu.selectedCriteria].sub_criterias[menu.selectedSubCriteria].experts"
+                    v-for="(data2, index2) in experts()"
                     v-bind:key="index2"
                   >
                     <label class="m-t-10">Background of Expert {{index2+1}}</label>
@@ -271,7 +218,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-12 inijudul">
+            <div class="col-md-12 inijudul" v-if="topic.criterias.length > 0">
               <center>
                 <label>System Range Grade</label>
               </center>
@@ -292,7 +239,10 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-if="topic.criterias[menu.selectedCriteria].sub_criterias.length == 0" v-for="(data,index) in topic.criterias[menu.selectedCriteria].system_range_grade" v-bind:key="index">
+                  <tr
+                    v-for="(data,index) in dataCriteria().system_range_grade"
+                    v-bind:key="index"
+                  >
                     <td>
                       <input type="text" style="width: 50px" v-model="data.symbol">
                     </td>
@@ -303,7 +253,7 @@
                       <input type="text" style="width: 50px" v-model="data.tfn_x[1]">
                     </td>
                     <td>
-                      <input type="text" style="width: 50px"  v-model="data.tfn_x[2]">
+                      <input type="text" style="width: 50px" v-model="data.tfn_x[2]">
                     </td>
                     <td>
                       <input type="text" style="width: 50px" v-model="data.tfn_y[0]">
@@ -312,143 +262,133 @@
                       <input type="text" style="width: 50px" v-model="data.tfn_y[1]">
                     </td>
                     <td>
-                      <input type="text" style="width: 50px"  v-model="data.tfn_y[2]">
+                      <input type="text" style="width: 50px" v-model="data.tfn_y[2]">
                     </td>
                     <td colspan="2">
-                      <textarea type="text" style="width: 300px" class="form-control" v-model="data.general_interpretation"></textarea>
-                    </td>
-                  </tr>
-                  <tr v-if="topic.criterias[menu.selectedCriteria].sub_criterias.length > 0" v-for="(data,index) in topic.criterias[menu.selectedCriteria].sub_criterias[menu.selectedSubCriteria].system_range_grade" v-bind:key="index">
-                    <td>
-                      <input type="text" style="width: 50px" v-model="data.symbol">
-                    </td>
-                    <td>
-                      <input type="text" style="width: 50px" v-model="data.tfn_x[0]">
-                    </td>
-                    <td>
-                      <input type="text" style="width: 50px" v-model="data.tfn_x[1]">
-                    </td>
-                    <td>
-                      <input type="text" style="width: 50px"  v-model="data.tfn_x[2]">
-                    </td>
-                    <td>
-                      <input type="text" style="width: 50px" v-model="data.tfn_y[0]">
-                    </td>
-                    <td>
-                      <input type="text" style="width: 50px" v-model="data.tfn_y[1]">
-                    </td>
-                    <td>
-                      <input type="text" style="width: 50px"  v-model="data.tfn_y[2]">
-                    </td>
-                    <td colspan="2">
-                      <textarea type="text" style="width: 300px" class="form-control" v-model="data.general_interpretation"></textarea>
+                      <textarea
+                        type="text"
+                        style="width: 300px"
+                        class="form-control"
+                        v-model="data.general_interpretation"
+                      ></textarea>
                     </td>
                   </tr>
                 </tbody>
               </table>
-              <center>
-                <label>Design Range</label>
-              </center>
-              <table class="table" style="text-align: center;">
-                <thead>
-                  <tr>
-                    <th class="text-center">Symbol of Assesment</th>
-                    <th class="text-center" colspan="3">TFN (ax,bx,cx)</th>
-                    <th class="text-center" colspan="3">TFN (ay,by,cy)</th>
-                    <th class="text-center">General Interpretation</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-if="topic.criterias[menu.selectedCriteria].sub_criterias.length == 0">
-                    <td>
-                      <input type="text" style="width: 50px" v-model="topic.criterias[menu.selectedCriteria].design_range.symbol">
-                    </td>
-                    <td>
-                      <input type="text" style="width: 50px" v-model="topic.criterias[menu.selectedCriteria].design_range.tfn_x[0]">
-                    </td>
-                    <td>
-                      <input type="text" style="width: 50px" v-model="topic.criterias[menu.selectedCriteria].design_range.tfn_x[1]">
-                    </td>
-                    <td>
-                      <input type="text" style="width: 50px" v-model="topic.criterias[menu.selectedCriteria].design_range.tfn_x[2]">
-                    </td>
-                    <td>
-                      <input type="text" style="width: 50px" v-model="topic.criterias[menu.selectedCriteria].design_range.tfn_y[0]">
-                    </td>
-                    <td>
-                      <input type="text" style="width: 50px" v-model="topic.criterias[menu.selectedCriteria].design_range.tfn_y[1]">
-                    </td>
-                    <td>
-                      <input type="text" style="width: 50px" v-model="topic.criterias[menu.selectedCriteria].design_range.tfn_y[2]">
-                    </td>
-                    <td>
-                      <textarea type="text" style="width: 300px" class="form-control" v-model="topic.criterias[menu.selectedCriteria].design_range.general_interpretation"></textarea>
-                    </td>
-                  </tr>
-                  <tr v-if="topic.criterias[menu.selectedCriteria].sub_criterias.length > 0">
-                    <td>
-                      <input type="text" style="width: 50px" v-model="topic.criterias[menu.selectedCriteria].sub_criterias[menu.selectedSubCriteria].design_range.symbol">
-                    </td>
-                    <td>
-                      <input type="text" style="width: 50px" v-model="topic.criterias[menu.selectedCriteria].sub_criterias[menu.selectedSubCriteria].design_range.tfn_x[0]">
-                    </td>
-                    <td>
-                      <input type="text" style="width: 50px" v-model="topic.criterias[menu.selectedCriteria].sub_criterias[menu.selectedSubCriteria].design_range.tfn_x[1]">
-                    </td>
-                    <td>
-                      <input type="text" style="width: 50px" v-model="topic.criterias[menu.selectedCriteria].sub_criterias[menu.selectedSubCriteria].design_range.tfn_x[2]">
-                    </td>
-                    <td>
-                      <input type="text" style="width: 50px" v-model="topic.criterias[menu.selectedCriteria].sub_criterias[menu.selectedSubCriteria].design_range.tfn_y[0]">
-                    </td>
-                    <td>
-                      <input type="text" style="width: 50px" v-model="topic.criterias[menu.selectedCriteria].sub_criterias[menu.selectedSubCriteria].design_range.tfn_y[1]">
-                    </td>
-                    <td>
-                      <input type="text" style="width: 50px" v-model="topic.criterias[menu.selectedCriteria].sub_criterias[menu.selectedSubCriteria].design_range.tfn_y[2]">
-                    </td>
-                    <td>
-                      <textarea type="text" style="width: 300px" class="form-control" v-model="topic.criterias[menu.selectedCriteria].sub_criterias[menu.selectedSubCriteria].design_range.general_interpretation"></textarea>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-              <center>
-                <label>Identification Evaluation Each Decision</label>
-              </center>
-              <table class="table" style="text-align: center;">
-                <thead>
-                  <tr>
-                    <th class="text-center">Symbol of Assesment</th>
-                    <th class="text-center">Evaluation</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-if="topic.criterias[menu.selectedCriteria].sub_criterias.length == 0" v-for="(data,index) in topic.criterias[menu.selectedCriteria].system_range_grade" v-bind:key="index">
-                    <td>{{data.symbol}}</td>
-                    <td>
-                      <textarea type="text" class="form-control" v-model="data.evaluation"></textarea>
-                    </td>
-                  </tr>
-                  <tr v-if="topic.criterias[menu.selectedCriteria].sub_criterias.length > 0" v-for="(data,index) in topic.criterias[menu.selectedCriteria].sub_criterias[menu.selectedSubCriteria].system_range_grade" v-bind:key="index">
-                    <td>{{data.symbol}}</td>
-                    <td>
-                      <textarea type="text" class="form-control" v-model="data.evaluation"></textarea>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+              <div>
+                <center>
+                  <label>Design Range</label>
+                </center>
+                <table class="table" style="text-align: center;">
+                  <thead>
+                    <tr>
+                      <th class="text-center">Symbol of Assesment</th>
+                      <th class="text-center" colspan="3">TFN (ax,bx,cx)</th>
+                      <th class="text-center" colspan="3">TFN (ay,by,cy)</th>
+                      <th class="text-center">General Interpretation</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- dengan sub criteria -->
+                    <tr>
+                      <td>
+                        <input
+                          type="text"
+                          style="width: 50px"
+                          v-model="dataCriteria().design_range.symbol"
+                        >
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          style="width: 50px"
+                          v-model="dataCriteria().design_range.tfn_x[0]"
+                        >
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          style="width: 50px"
+                          v-model="dataCriteria().design_range.tfn_x[1]"
+                        >
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          style="width: 50px"
+                          v-model="dataCriteria().design_range.tfn_x[2]"
+                        >
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          style="width: 50px"
+                          v-model="dataCriteria().design_range.tfn_y[0]"
+                        >
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          style="width: 50px"
+                          v-model="dataCriteria().design_range.tfn_y[1]"
+                        >
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          style="width: 50px"
+                          v-model="dataCriteria().design_range.tfn_y[2]"
+                        >
+                      </td>
+                      <td>
+                        <textarea
+                          type="text"
+                          style="width: 300px"
+                          class="form-control"
+                          v-model="dataCriteria().design_range.general_interpretation"
+                        ></textarea>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div>
+                <center>
+                  <label>Identification Evaluation Each Decision</label>
+                </center>
+                <table class="table" style="text-align: center;">
+                  <thead>
+                    <tr>
+                      <th class="text-center">Symbol of Assesment</th>
+                      <th class="text-center">Evaluation</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      v-for="(data,index) in dataCriteria().system_range_grade"
+                      v-bind:key="index"
+                    >
+                      <td>{{data.symbol}}</td>
+                      <td>
+                        <textarea type="text" class="form-control" v-model="data.evaluation"></textarea>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+          <button @click="submit" class="btn btn-primary pull-right">Save</button>
     <!-- ============================================================== -->
     <!-- End PAge Content -->
     <!-- ============================================================== -->
   </div>
 </template>
 <script>
+import topic_model from "../service/topic";
 export default {
   data() {
     return {
@@ -618,6 +558,31 @@ export default {
     };
   },
   methods: {
+    submit() {
+      this.$session.set("topic",this.topic)
+      console.log(this.topic)
+      topic_model.setTopic(this.topic.topic_id, this.topic).then(
+        (res) => this.$swal("Berhasil simpan","Data berhasil tersimpan", "success")
+      )
+    },
+    experts() {
+      var a = this.menu.selectedCriteria;
+      var b = this.menu.selectedSubCriteria;
+      if (this.topic.criterias[a].sub_criterias.length > 0) {
+        return this.topic.criterias[a].sub_criterias[b].experts;
+      } else {
+        return this.topic.criterias[a].experts;
+      }
+    },
+    dataCriteria() {
+      var a = this.menu.selectedCriteria;
+      var b = this.menu.selectedSubCriteria;
+      if (this.topic.criterias[a].sub_criterias.length > 0) {
+        return this.topic.criterias[a].sub_criterias[b];
+      } else {
+        return this.topic.criterias[a];
+      }
+    },
     toggleBawah() {
       if (this.atasbawah) {
         $("#atas").show();
@@ -637,7 +602,36 @@ export default {
       this.topic.criterias.push({
         symbol: "",
         criteria: "",
-        sub_criterias: [],
+        sub_criterias: [
+          {
+            symbol: "",
+            sub_criteria: "",
+            performance_indicator: "",
+            measurement_method: "",
+            experts: [
+              {
+                description: "",
+                weight: 0
+              }
+            ],
+            system_range_grade: [
+              {
+                symbol: "",
+                tfn_x: [0, 0, 0],
+                tfn_y: [0, 0, 0],
+                general_interpretation: "",
+                evaluation: ""
+              }
+            ],
+            design_range: {
+              symbol: "",
+              tfn_x: [0, 0, 0],
+              tfn_y: [0, 0, 0],
+              general_interpretation: "",
+              evaluation: ""
+            }
+          }
+        ],
         performance_indicator: "",
         measurement_method: "",
         experts: [
@@ -665,7 +659,9 @@ export default {
       });
     },
     removeCriteria() {
-      this.topic.criterias.splice(-1, 1);
+      if (this.topic.criterias.length > 1)
+        this.topic.criterias.splice(-1, 1);
+      else this.$swal("Criteria tidak boleh kurang dari 1", {icon: "error"})
     },
     addSubCriteria(data) {
       data.sub_criterias.push({
@@ -701,43 +697,35 @@ export default {
       data.sub_criterias.splice(-1, 1);
     },
     addSystemRange() {
-      console.log(this.topic);
+      this.dataCriteria().system_range_grade.push({
+          symbol: "",
+          tfn_x: [0, 0, 0],
+          tfn_y: [0, 0, 0],
+          general_interpretation: "",
+          evaluation: ""
+        });
     },
-    removeSystemRange() {},
-    changedCriteria() {
-      var selected = this.menu.selectedCriteria;
-      var selectedSub = this.menu.selectedSubCriteria;
-      var criteria = this.topic.criterias[selected];
-
-      if (criteria.sub_criterias.length > 0) {
-        this.performance = {
-          performance_indicator:
-            criteria.sub_criterias[selectedSub].performance_indicator,
-          measurement_method:
-            criteria.sub_criterias[selectedSub].measurement_method
-        };
-      }
+    removeSystemRange() {
+      this.dataCriteria().system_range_grade.splice(-1,1)
     },
-    addExpertCriteria() {
+    addExpert() {
       var selected = this.menu.selectedCriteria;
-      console.log("dipilih = " + selected);
-      this.topic.criterias[selected].experts.push({
+      console.log(this.experts())
+      this.experts().push({
         description: "",
         weight: 0
       });
-    },
-    addExpertSubCriteria() {
-      var selected = this.menu.selectedCriteria;
-      var selected2 = this.menu.selectedSubCriteria;
-      this.topic.criterias[selected].sub_criterias[selected2].experts.push({
-        description: "",
-        weight: 0
-      });
-    },
-    removeExpertCriteria() {
-      this.criterias[menu.selectedCriteria].experts.splice(-1, 1);
     }
   },
-  created() {}
+  created() {
+    this.topic = this.$session.get("topic")
+    this.topic.criterias.forEach(
+      (element) => {
+        if (element['sub_criterias'] == null){
+          element['sub_criterias'] = []
+        }
+      }
+    )
+  }
 };
 </script>

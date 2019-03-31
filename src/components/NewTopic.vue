@@ -28,7 +28,7 @@
         <div class="card">
           <div class="card-block">
             <div class="form-group">
-              <label class="col-md-12">Topic</label>
+              <label class="col-md-12">Topic Name</label>
               <div class="col-md-12">
                 <input
                   type="text"
@@ -65,26 +65,94 @@
 </template>
 
 <script>
+import topic_model from "../service/topic"
+
 export default {
   data() {
     return {
       topic: {
         topic_name: "",
-        topic_desc: ""
-      }
+        topic_desc: "",
+        alternatives: [{
+          symbol: "",
+          alternative: ""
+        }],
+        criterias: [
+          {
+            symbol: "",
+            criteria: "",
+            performance_indicator: "",
+            measurement_method: "",
+            sub_criterias : [
+              
+          {
+            symbol: "",
+            sub_criteria: "",
+            performance_indicator: "",
+            measurement_method: "",
+            experts: [
+              {
+                description: "",
+                weight: 0
+              }
+            ],
+            system_range_grade: [
+              {
+                symbol: "",
+                tfn_x: [0, 0, 0],
+                tfn_y: [0, 0, 0],
+                general_interpretation: "",
+                evaluation: ""
+              }
+            ],
+            design_range: {
+              symbol: "",
+              tfn_x: [0, 0, 0],
+              tfn_y: [0, 0, 0],
+              general_interpretation: "",
+              evaluation: ""
+            }
+          }
+            ],
+            experts: [
+              {
+                description: "",
+                weight: 0
+              }
+            ],
+            system_range_grade: [
+              {
+                symbol: "",
+                tfn_x: [0, 0, 0],
+                tfn_y: [0, 0, 0],
+                general_interpretation: "",
+                evaluation: ""
+              }
+            ],
+            design_range: {
+              symbol: "",
+              tfn_x: [0, 0, 0],
+              tfn_y: [0, 0, 0],
+              general_interpretation: "",
+              evaluation: ""
+            }
+          },
+        ]
+      },
     };
   },
   methods: {
     submit() {
-      this.$session.set("topicData", this.topic);
-      console.log(this.topic);
+      topic_model.addTopic(this.topic).then(
+        (res) => {
+          this.$swal("Berhasil simpan","Data berhasil tersimpan", "success")
+          this.$window.location.href = "../"
+        }
+      )
     }
   },
   created() {
-    var topic = this.$session.get("topicData");
-    if (topic != null) {
-      this.topic = topic;
-    }
+
   }
 };
 </script>

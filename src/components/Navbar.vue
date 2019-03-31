@@ -4,9 +4,14 @@
             <div class="scroll-sidebar">
                 <!-- Sidebar navigation-->
                 <nav class="sidebar-nav">
-                    <ul id="sidebarnav">
+                    <ul v-if="topic != null" id="sidebarnav">
+                        <li class="text-center">
+                            <button class="btn btn-primary" @click="logout">Back to Main Menu</button>
+                        </li>
+
                         <li>
-                            <a href="/" class="waves-effect"><i class="m-r-10" aria-hidden="true"></i>Dashboard</a>
+                            <!-- <a href="/" class="waves-effect"><i class="m-r-10" aria-hidden="true"></i>Dashboard</a> -->
+                            <div class="m-t-10 alert alert-success text-center">Topic<br>{{topic.topic_name}}</div>
                         </li>
                         <li>
                             <a href="alternative" class="waves-effect"><i class="m-r-10" aria-hidden="true"></i>Alternative</a>
@@ -30,9 +35,49 @@
                         </li>
 
                     </ul>
+                    <ul v-if="topic == null" id="sidebarnav">
+                        <li>
+                            <a href="/" class="waves-effect"><i class="m-r-10" aria-hidden="true"></i>Dashboard</a>
+                        </li>
+                    </ul>
                 </nav>
                 <!-- End Sidebar navigation -->
             </div>
             <!-- End Sidebar scroll-->
         </aside>
 </template>
+<script>
+import topic_model from '../service/topic'
+
+export default {
+    data(){
+        return {
+        }
+    },
+    methods:{
+        logout(){
+            this.$swal({
+                title: "Are you sure?",
+                text: "Apakah anda telah menyimpan data, data akan hilang apabila belum menekan tombol simpan",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+                })
+                .then((willDelete) => {
+                if (willDelete) {
+                    this.$swal("Berhasil keluar", {
+                    icon: "success",
+                    });
+                    this.$session.remove("topic")
+                    this.$window.location.href = "../"
+                } else {
+                    this.$swal("Silahkan simpan data anda terlebih dahulu sebelum keluar");
+                }
+                });
+        }
+    },
+    created(){
+        this.topic = this.$session.get("topic"); 
+    }
+}
+</script>

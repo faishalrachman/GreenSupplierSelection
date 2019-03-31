@@ -36,51 +36,26 @@
   </div>
 </template>
 <script>
+import topic_model from "../service/topic";
 export default {
   data() {
     return {
-      topics: [
-        {
-          topic_id: 1,
-          topic_name: "hihihahahahahaha",
-          topic_desc: "bacot adit",
-          alternatives: [],
-          criterias: []
-        },
-        {
-          topic_id: 2,
-          topic_name: "hihihahahahahaha",
-          topic_desc: "bacot adit",
-          num_alternatives: 1,
-          alternatives: []
-        },
-        {
-          topic_id: 3,
-          topic_name: "hihihahahahahaha",
-          topic_desc: "bacot adit",
-          num_alternatives: 1,
-          alternatives: []
-        },
-        {
-          topic_id: 4,
-          topic_name: "hihihahahahahaha",
-          topic_desc: "bacot adit",
-          num_alternatives: 1,
-          alternatives: []
-        }
-      ]
+      topics: []
     };
   },
   methods: {
     moveTo(index) {
       this.$session.set("topic", this.topics[index]);
-      this.$router.push("alternative");
+      this.$window.location.href = "/alternative"
     }
   },
   created() {
-    //  this.$session.set("topicData",this.topics)
-    // this.topics = this.$session.get("topicData");
-
+    topic_model.getTopics().then(
+      data => {
+        this.topics = data;
+        console.log(data);
+      }
+    )
   }
 };
 </script>
