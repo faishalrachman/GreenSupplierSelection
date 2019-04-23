@@ -34,7 +34,7 @@
               <div class="col-md-12"></div>
             </div>
             <div class="table-responsive">
-              <table class="table" v-if="topic.alternatives.length > 0">
+              <table class="table">
                 <thead>
                   <tr>
                     <th>Symbol</th>
@@ -42,7 +42,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="(data, key) in topic.alternatives">
+                  <tr v-for="(data, key) in topic.alternatives" v-bind:key="key">
                     <td>
                       <input type="text" class="form-control col-md-6" v-model="data.symbol" >
                     </td>
@@ -53,7 +53,7 @@
                 </tbody>
               </table>
             </div>
-          <button class="btn btn-primary pull-right">Save</button>
+          <button @click="submit" class="btn btn-primary pull-right">Save</button>
           </div>
         </div>
       </div>
@@ -64,51 +64,37 @@
   </div>
 </template>
 <script>
+import topic_model from "../service/topic";
 export default {
   data() {
     return {
       topic: {
-        topic_name: "",
-        topic_desc: "",
-        alternatives: [{
-          symbol: "A1",
-          alternative: "hahahah"
-        },{
-          symbol: "A1",
-          alternative: "hahahah"
-        },{
-          symbol: "A1",
-          alternative: "hahahah"
-        },{
-          symbol: "A1",
-          alternative: "hahahah"
-        },{
-          symbol: "A1",
-          alternative: "hahahah"
-        },
-        ],
       }
     };
   },
   methods: {
     submit() {
-      this.$session.set("topicData", this.topic);
-      console.log(this.topic);
+      this.$session.set("topic",this.topic)
+      console.log(this.topic)
+      topic_model.setTopic(this.topic.topic_id, this.topic).then(
+        (res) => this.$swal("Berhasil simpan","Data berhasil tersimpan", "success")
+      )
     },
     addAlternatives(){
       this.topic.alternatives.push({
         symbol: "",
         alternative:""
       });
+      console.log(this.topic)
     },
     removeAlternatives(){
       this.topic.alternatives.splice(-1,1);
     }
   },
   created() {
-    var topic = this.$session.get("topic");
-    if (topic != null) {
-      this.topic = topic;
+    this.topic = this.$session.get("topic")
+    if (this.topic.alternatives == null){
+      this.topic.alternatives = []
     }
   }
 };

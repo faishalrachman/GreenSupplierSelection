@@ -1,14 +1,14 @@
 function showFigure() {
     $("#myFigure").show();
     var trace1 = {
-        x: [5, 7.5, 10],
+        x: [0, 5, 10],
         y: [0, 1, 0],
         type: 'scatter',
         name: "System Range"
     };
 
     var trace2 = {
-        x: [7, 10, 10],
+        x: [0, 3, 10],
         y: [0, 1, 0],
         type: 'scatter',
         name: "Design Range"
