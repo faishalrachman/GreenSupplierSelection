@@ -130,10 +130,7 @@
                   <label class="col-md-4">Symbol Criteria</label>
                 </center>
 
-                <select
-                  class="form-control m-t-30"
-                  v-model="menu.selectedCriteria"
-                >
+                <select class="form-control m-t-30" v-model="menu.selectedCriteria">
                   <option
                     v-for="(data, index) in topic.criterias"
                     v-bind:key="index"
@@ -146,17 +143,13 @@
                   <label class="col-md-4">Symbol Sub-Criteria</label>
                 </center>
 
-                <select
-                  class="form-control m-t-30"
-                  v-model="menu.selectedSubCriteria"
-                >
+                <select class="form-control m-t-30" v-model="menu.selectedSubCriteria">
                   <option
                     v-for="(data, index) in topic.criterias[menu.selectedCriteria].sub_criterias"
                     v-bind:key="index"
                     v-bind:value="index"
                   >{{data.symbol}} - {{data.sub_criteria}}</option>
                 </select>
-
               </div>
               <div class="form-group">
                 <label class="col-md-5 m-t-30" style="margin-left:30%">Performance Indicator</label>
@@ -181,26 +174,14 @@
                 <br>
               </div>
               <!-- Expert tanpa sub criteria -->
-              <div
-                class="form-group">
+              <div class="form-group">
                 <label class="col-md-5 m-t-30">Number of Expert</label>
-                <input
-                  type="number"
-                  class="col-md-2 form-control"
-                  v-model="experts().length"
-                >
-                <button
-                  class="btn btn-primary m-r-10 m-l-10"
-                  @click="experts().splice(-1,1)"
-                >-</button>
+                <input type="number" class="col-md-2 form-control" v-model="experts().length">
+                <button class="btn btn-primary m-r-10 m-l-10" @click="experts().splice(-1,1)">-</button>
                 <button class="btn btn-primary" @click="addExpert">+</button>
                 <br>
                 <div v-if="experts().length > 0">
-                  <div
-                    class="m-l-10"
-                    v-for="(data2, index2) in experts()"
-                    v-bind:key="index2"
-                  >
+                  <div class="m-l-10" v-for="(data2, index2) in experts()" v-bind:key="index2">
                     <label class="m-t-10">Background of Expert {{index2+1}}</label>
                     <textarea
                       class="form-control"
@@ -212,7 +193,14 @@
                     ></textarea>
                     <br>
                     <label class="col-md-5 m-t-10">Weight of Expert {{index2+1}}</label>
-                    <input type="number" min="0" max="1" step="0.01" class="form-control col-md-3" v-model="data2.weight">
+                    <input
+                      type="number"
+                      min="0"
+                      max="1"
+                      step="0.01"
+                      class="form-control col-md-3"
+                      v-model="data2.weight"
+                    >
                   </div>
                   <br>
                 </div>
@@ -239,10 +227,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr
-                    v-for="(data,index) in dataCriteria().system_range_grade"
-                    v-bind:key="index"
-                  >
+                  <tr v-for="(data,index) in dataCriteria().system_range_grade" v-bind:key="index">
                     <td>
                       <input type="text" style="width: 50px" v-model="data.symbol">
                     </td>
@@ -381,7 +366,7 @@
         </div>
       </div>
     </div>
-          <button @click="submit" class="btn btn-primary pull-right">Save</button>
+    <button @click="submit" class="btn btn-primary pull-right">Save</button>
     <!-- ============================================================== -->
     <!-- End PAge Content -->
     <!-- ============================================================== -->
@@ -559,11 +544,13 @@ export default {
   },
   methods: {
     submit() {
-      this.$session.set("topic",this.topic)
-      console.log(this.topic)
-      topic_model.setTopic(this.topic.topic_id, this.topic).then(
-        (res) => this.$swal("Berhasil simpan","Data berhasil tersimpan", "success")
-      )
+      this.$session.set("topic", this.topic);
+      console.log(this.topic);
+      topic_model
+        .setTopic(this.topic.topic_id, this.topic)
+        .then(res =>
+          this.$swal("Berhasil simpan", "Data berhasil tersimpan", "success")
+        );
     },
     experts() {
       var a = this.menu.selectedCriteria;
@@ -659,9 +646,8 @@ export default {
       });
     },
     removeCriteria() {
-      if (this.topic.criterias.length > 1)
-        this.topic.criterias.splice(-1, 1);
-      else this.$swal("Criteria tidak boleh kurang dari 1", {icon: "error"})
+      if (this.topic.criterias.length > 1) this.topic.criterias.splice(-1, 1);
+      else this.$swal("Criteria tidak boleh kurang dari 1", { icon: "error" });
     },
     addSubCriteria(data) {
       data.sub_criterias.push({
@@ -697,20 +683,22 @@ export default {
       data.sub_criterias.splice(-1, 1);
     },
     addSystemRange() {
+      if (this.dataCriteria().system_range_grade == null)
+        this.dataCriteria()["system_range_grade"] = [];
       this.dataCriteria().system_range_grade.push({
-          symbol: "",
-          tfn_x: [0, 0, 0],
-          tfn_y: [0, 1, 0],
-          general_interpretation: "",
-          evaluation: ""
-        });
+        symbol: "",
+        tfn_x: [0, 0, 0],
+        tfn_y: [0, 1, 0],
+        general_interpretation: "",
+        evaluation: ""
+      });
     },
     removeSystemRange() {
-      this.dataCriteria().system_range_grade.splice(-1,1)
+      this.dataCriteria().system_range_grade.splice(-1, 1);
     },
     addExpert() {
       var selected = this.menu.selectedCriteria;
-      console.log(this.experts())
+      console.log(this.experts());
       this.experts().push({
         description: "",
         weight: 0
@@ -718,14 +706,12 @@ export default {
     }
   },
   created() {
-    this.topic = this.$session.get("topic")
-    this.topic.criterias.forEach(
-      (element) => {
-        if (element['sub_criterias'] == null){
-          element['sub_criterias'] = []
-        }
+    this.topic = this.$session.get("topic");
+    this.topic.criterias.forEach(element => {
+      if (element["sub_criterias"] == null) {
+        element["sub_criterias"] = [];
       }
-    )
+    });
   }
 };
 </script>
