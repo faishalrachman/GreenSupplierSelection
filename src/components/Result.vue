@@ -31,125 +31,25 @@
               style="text-align: center;overflow-x: scroll;display:block;width:100%"
             >
               <thead>
-                <tr rowspan="2">
-                  <th class="text-center" rowspan="2">Criteria/Sub Criteria</th>
-                  <th
-                    v-for="(data,index) in topic.criterias"
-                    class="text-center"
-                    v-bind:colspan="data.sub_criterias.length"
-                    v-bind:key="index"
-                  >{{data.symbol}}-{{data.criteria}}</th>
+                <tr >
+                  <th></th>
+                  <th class="text-center" v-bind:colspan="topic.alternatives.length+2">Alternative</th>
                 </tr>
                 <tr>
+                  <th class="text-center">Criteria/Sub-Criteria</th>
                   <th
-                    v-for="(data,index) in loadSubCriteria()"
+                    v-for="(data,index) in topic.alternatives"
                     v-bind:key="index"
                     class="text-center"
-                  >{{data.text}}</th>
+                  >{{data.symbol}}</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
+                <tr v-for="(data, index) in nama" v-bind:key="index">
                   <td>
-                    <input type="text" class="form-control" style="width:50px;">
+                    {{data}}
                   </td>
-                  <td
-                    v-for="(data,index) in loadSubCriteria()"
-                    v-bind:key="index"
-                    class="text-center"
-                  >{{data.fuzzy.ik}}</td>
-                </tr>
-                <tr>
-                  <td>
-                    <input type="text" class="form-control" style="width:50px;">
-                  </td>
-                  <td>
-                    <input type="text" class="form-control" style="width:100px;">
-                  </td>
-                  <td>
-                    <input type="text" class="form-control" style="width:100px;">
-                  </td>
-                  <td>
-                    <input type="text" class="form-control" style="width:100px;">
-                  </td>
-                  <td>
-                    <input type="text" class="form-control" style="width:100px;">
-                  </td>
-                  <td>
-                    <input type="text" class="form-control" style="width:100px;">
-                  </td>
-                  <td>
-                    <input type="text" class="form-control" style="width:100px;">
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <input type="text" class="form-control" style="width:50px;">
-                  </td>
-                  <td>
-                    <input type="text" class="form-control" style="width:100px;">
-                  </td>
-                  <td>
-                    <input type="text" class="form-control" style="width:100px;">
-                  </td>
-                  <td>
-                    <input type="text" class="form-control" style="width:100px;">
-                  </td>
-                  <td>
-                    <input type="text" class="form-control" style="width:100px;">
-                  </td>
-                  <td>
-                    <input type="text" class="form-control" style="width:100px;">
-                  </td>
-                  <td>
-                    <input type="text" class="form-control" style="width:100px;">
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <input type="text" class="form-control" style="width:50px;">
-                  </td>
-                  <td>
-                    <input type="text" class="form-control" style="width:100px;">
-                  </td>
-                  <td>
-                    <input type="text" class="form-control" style="width:100px;">
-                  </td>
-                  <td>
-                    <input type="text" class="form-control" style="width:100px;">
-                  </td>
-                  <td>
-                    <input type="text" class="form-control" style="width:100px;">
-                  </td>
-                  <td>
-                    <input type="text" class="form-control" style="width:100px;">
-                  </td>
-                  <td>
-                    <input type="text" class="form-control" style="width:100px;">
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <input type="text" class="form-control" style="width:50px;">
-                  </td>
-                  <td>
-                    <input type="text" class="form-control" style="width:100px;">
-                  </td>
-                  <td>
-                    <input type="text" class="form-control" style="width:100px;">
-                  </td>
-                  <td>
-                    <input type="text" class="form-control" style="width:100px;">
-                  </td>
-                  <td>
-                    <input type="text" class="form-control" style="width:100px;">
-                  </td>
-                  <td>
-                    <input type="text" class="form-control" style="width:100px;">
-                  </td>
-                  <td>
-                    <input type="text" class="form-control" style="width:100px;">
-                  </td>
+                  <td v-for="(data2, index2) in fuzzy[index]" v-bind:key="index2">{{isNaN(data2.ik) ? "∞" : data2.ik}}</td>
                 </tr>
               </tbody>
             </table>
@@ -492,7 +392,8 @@ export default {
         selectedCriteria: 0,
         selectedSubCriteria: 0
       },
-      result: []
+      fuzzy: [],
+      nama: []
     };
   },
   methods: {
@@ -526,27 +427,8 @@ export default {
         return this.topic.criterias[a];
       }
     },
-    loadSubCriteria() {
-      var data = [];
-      this.topic.criterias.forEach(criteria => {
-        console.log(criteria)
-        if (criteria.sub_criterias.length == 0) {
-          data.push({
-            length: 1,
-            text: "",
-            fuzzy: 0
-          });
-        } else {
-          criteria.sub_criterias.forEach(sub_criteria => {
-            data.push({
-              length: 1,
-              text: sub_criteria.symbol,
-              fuzzy: 0
-            })
-          })
-        }
-      });
-      return data;
+    loadCriteria(){
+      
     }
   },
   created() {
@@ -584,6 +466,8 @@ export default {
           fuzzy = rumus.intersection_point(fuzzy);
           criteria.fuzzy.push(fuzzy);
         }
+        this.nama.push(criteria.symbol)
+        this.fuzzy.push(criteria.fuzzy)
       } else {
         criteria.sub_criterias.forEach(sub_criteria => {
           sub_criteria["fuzzy"] = [];
@@ -597,6 +481,8 @@ export default {
             sub_criteria.fuzzy.push(fuzzy);
             topic_model.setTopic(this.topic.topic_id, this.topic);
           }
+          this.nama.push(sub_criteria.symbol)
+          this.fuzzy.push(sub_criteria.fuzzy)
         });
       }
     });

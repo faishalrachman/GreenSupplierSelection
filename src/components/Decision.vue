@@ -25,7 +25,7 @@
       <!-- Column -->
       <div class="col-md-10 inijudul">
         <div class="card">
-          <div class="card-block">
+          <div class="card-block"style="text-align: center; overflow-x: scroll; display: block; width: 100%;">
             <div class="col-md-6" >
               <label>Criteria</label>
               <select class="form-control" v-model="menu.selectedCriteria" @change="changeDecision">
@@ -46,7 +46,7 @@
                 </select>
               </div>
             </div>
-            <table class="table m-t-30">
+            <table class="table m-t-30" >
               <thead>
                 <tr
                   rowspan="2"
