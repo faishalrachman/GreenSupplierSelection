@@ -37,7 +37,7 @@
               </select>
               <div v-if="topic.criterias[menu.selectedCriteria].sub_criterias.length > 0">
                 <label class="m-t-30">Sub-Criteria</label>
-                <select class="form-control">
+                <select class="form-control" v-model="menu.selectedSubCriteria">
                   <option
                     v-for="(data,index) in topic.criterias[menu.selectedCriteria].sub_criterias"
                     v-bind:key="index"
@@ -556,11 +556,15 @@ export default {
     dataCriteria() {
       var a = this.menu.selectedCriteria;
       var b = this.menu.selectedSubCriteria;
+      console.log(b)
       if (this.topic.criterias[a].sub_criterias.length > 0) {
+        console.log(this.topic.criterias[a].sub_criterias[b].sub_criteria)
         return this.topic.criterias[a].sub_criterias[b];
       } else {
+        console.log(this.topic.criterias[a].criteria)
         return this.topic.criterias[a];
       }
+      
     },
     intersection_point() {
       $("#myFigure").show();
