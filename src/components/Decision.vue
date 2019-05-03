@@ -26,7 +26,7 @@
       <div class="col-md-10 inijudul">
         <div class="card">
           <div class="card-block">
-            <div class="col-md-6">
+            <div class="col-md-6" >
               <label>Criteria</label>
               <select class="form-control" v-model="menu.selectedCriteria" @change="changeDecision">
                 <option

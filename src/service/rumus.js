@@ -57,7 +57,7 @@ export default {
                 bentuk = "SPL";
             } else if (cx <= px) {
                 console.log("GA ADA PERPOTONGAN");
-                bentuk = "SPL";
+                bentuk = "NO";
             } else {
                 console.log("SS");
                 bentuk = "SS";

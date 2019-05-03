@@ -120,7 +120,7 @@
             </div>
             <div class="col-md-12">
               <div class="col-md-4 d-inline-flex">
-                <table class="table" style="text-align: center;">
+                <table class="table" style="text-align: center;" >
                   <thead>
                     <tr>
                       <th class="text-center" colspan="2">Intersecting Point</th>
