@@ -37,7 +37,7 @@
               </select>
               <div v-if="topic.criterias[menu.selectedCriteria].sub_criterias.length > 0">
                 <label class="m-t-30">Sub-Criteria</label>
-                <select class="form-control" @change="changeDecision">
+                <select class="form-control" @change="changeDecision" v-model="menu.selectedSubCriteria">
                   <option
                     v-for="(data,index) in topic.criterias[menu.selectedCriteria].sub_criterias"
                     v-bind:key="index"
@@ -59,10 +59,10 @@
                   rowspan="2"
                   v-if="topic.criterias[menu.selectedCriteria].sub_criterias.length > 0"
                 >
-                  <th class="text-center" rowspan="2">Criteria / Sub Criteria</th>
+                  <th class="text-center" rowspan="2">Sub Criteria</th>
                   <th
                     class="text-center"
-                  >{{dataCriteria().sub_criteria || dataCriteria().criteria }}</th>
+                  >{{dataCriteria().sub_criteria }}</th>
                 </tr>
                 <tr>
                   <th class="text-center" v-for="data in menu.subcriteria" v-bind:key="data" >{{data.symbol}}</th>
@@ -487,11 +487,15 @@ export default {
     dataCriteria() {
       var a = this.menu.selectedCriteria;
       var b = this.menu.selectedSubCriteria;
+      console.log(b)
       if (this.topic.criterias[a].sub_criterias.length > 0) {
+        console.log(this.topic.criterias[a].sub_criterias[b].sub_criteria)
         return this.topic.criterias[a].sub_criterias[b];
       } else {
+        console.log(this.topic.criterias[a].criteria)
         return this.topic.criterias[a];
       }
+      
     },
     changeDecision() {
       var data = this.dataCriteria();
