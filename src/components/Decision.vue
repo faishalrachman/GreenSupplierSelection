@@ -99,6 +99,7 @@
             </table>
           </div>
         </div>
+                <button @click="submit" class="btn btn-primary pull-right">Save</button>
       </div>
       <div class="col-md-3 inijudul">
         <div class="card">
@@ -131,7 +132,6 @@
         </div>
       </div>
     </div>
-                <button @click="submit" class="btn btn-primary pull-right">Save</button>
     <!-- ============================================================== -->
     <!-- End PAge Content -->
     <!-- ============================================================== -->

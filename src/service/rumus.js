@@ -201,6 +201,8 @@ export default {
             default:
                 {
                     console.log("tidak ada IP")
+                    data.area.x = [0, 0,0]
+                    data.area.y = [0, 0,0]
                 }
 
         }

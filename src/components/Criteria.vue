@@ -687,7 +687,7 @@ export default {
         design_range: {
           symbol: "",
           tfn_x: [0, 0, 0],
-          tfn_y: [0, 0, 0],
+          tfn_y: [0, 1, 0],
           general_interpretation: "",
           evaluation: ""
         }
