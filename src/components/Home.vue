@@ -27,7 +27,9 @@
               class="img-fluid"
             >
             <div class="text-right" style="margin-top: 10px">
-              <button class="btn btn-danger" @click="moveTo(index)">Show Details</button>
+              <button class="btn btn-primary" @click="moveTo(index)">Show Details</button>
+              <button class="btn btn-success m-l-10" @click="duplicate(index)">Duplicate</button>
+              <button class="btn btn-danger m-l-10" @click="deleteTopic(index)">Delete</button>
             </div>
           </div>
         </div>
@@ -46,16 +48,45 @@ export default {
   methods: {
     moveTo(index) {
       this.$session.set("topic", this.topics[index]);
-      this.$window.location.href = "/alternative"
+      this.$window.location.href = "/alternative";
+    },
+    duplicate(index) {
+      var topic = this.topics[index];
+      // console.log(topic)
+      topic_model.addTopic(topic).then(() => {
+        this.$swal("Berhasil simpan", "Data berhasil tersimpan", "success");
+        this.$router.go(0);
+      });
+    },
+    deleteTopic(index){
+      var topic = this.topics[index]
+      this.$swal({
+                title: "Are you sure?",
+                text: "Apakah anda yakin akan menghapus "+topic.topic_name,
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+                })
+                .then((willDelete) => {
+                if (willDelete) {
+                  topic_model.deleteTopic(topic.topic_id).then(
+                    ()=>{
+                      this.$swal("Berhasil simpan", "Data berhasil tersimpan", "success");
+                      this.$router.go(0)
+                    }
+                  )
+                } else {
+                    this.$swal("Silahkan simpan data anda terlebih dahulu sebelum keluar");
+                }
+                });
+      console.log(topic.topic_id)
     }
   },
   created() {
-    topic_model.getTopics().then(
-      data => {
-        this.topics = data;
-        console.log(data);
-      }
-    )
+    topic_model.getTopics().then(data => {
+      this.topics = data;
+      console.log(data);
+    });
   }
 };
 </script>

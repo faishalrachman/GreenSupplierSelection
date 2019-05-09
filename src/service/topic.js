@@ -32,5 +32,9 @@ export default {
   },
   addTopic(topic){
       return ref.push(topic)
+  },
+  deleteTopic(topic_id){
+    var child = ref.child(topic_id)
+    return child.remove()
   }
 }
