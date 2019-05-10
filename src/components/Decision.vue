@@ -80,14 +80,14 @@
                     v-for="(data2,index_expert) in experts()"
                     v-bind:key="index_expert"
                   >
-                  {{data2.decision[index_alter].symbol || "-"}}<br>
+                  
                     <select
                       type="text"
                       class="form-control"
                       style="width:100px;"
                       @change="pilihExpert(index_alter,index_expert,$event)"
                     >
-                    <option>-</option>
+                    <option>{{data2.decision[index_alter].symbol || "-"}}</option>
                       <option
                         v-for="(data_grade,index_grade) in dataCriteria().system_range_grade"
                         v-bind:value="index_grade"
