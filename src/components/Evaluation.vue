@@ -31,31 +31,33 @@
       <div class="col-md-12">
         <div class="card">
           <div class="card-block">
-            <table class="table" style="text-align: center;">
+            <div class="col-md-4">
+              <label>Select Alternative</label>
+            <select class="form-control" v-model="menu.selectedAlternative">
+                  <option>-</option>
+                  <option v-for="(data,index) in topic.alternatives" v-bind:key="index" v-bind:value="index">{{data.symbol}}-{{data.alternative}}</option>
+                </select>
+                </div>
+            <div class="col-md-12">
+            <table class="table m-t-30" style="text-align: center;">
               <thead>
-                <tr rowspan="2">
-                  <th class="text-center">Symbol</th>
+                <tr>
                   <th class="text-center">Criteria / Sub-Criteria</th>
-                  <th class="text-center" colspan="2">Evaluation Each Alternative</th>
+                  <th class="text-center">Evaluation</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
+                <tr v-for="(criteria, index) in criterias" v-bind:key="index">
                   <td>
-                    <input type="text" class="form-control">
+                    {{criteria.symbol}} - {{criteria.sub_criteria || criteria.criteria}}
                   </td>
                   <td>
-                    <input type="text" class="form-control">
+                    {{criteria.system_range_grade[0].evaluation}}
                   </td>
-                  <td>
-                    <input type="text" class="form-control">
-                  </td>
-                  <td>
-                    <input type="text" class="form-control">
-                  </td>
-                </tr>
+                  </tr>
               </tbody>
             </table>
+            </div>
           </div>
         </div>
       </div>
@@ -65,3 +67,36 @@
     <!-- ============================================================== -->
   </div>
 </template>
+<script>
+export default {
+  data() {
+    return {
+      topic: {},
+      evaluations: [],
+      menu:{
+        selectedAlternative: 0
+      },
+      criterias : []
+    };
+  },
+  methods:{
+    loadData(){
+
+    }
+  },
+  created(){
+    this.topic = this.$session.get("topic");
+    for (var i in this.topic.criterias){
+      var criteria = this.topic.criterias[i]
+      if (criteria.sub_criterias.length > 0){
+        for (var j in criteria.sub_criterias){
+          var sub = criteria.sub_criterias[j]
+          this.criterias.push(sub)
+        }
+      } else {
+        this.criterias.push(criteria)
+      }
+    }
+  }
+}
+</script>

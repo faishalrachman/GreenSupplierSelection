@@ -14,6 +14,9 @@
                             <div class="m-t-10 alert alert-success text-center">Topic<br>{{topic.topic_name}}</div>
                         </li>
                         <li>
+                            <a href="change" class="waves-effect"><i class="m-r-10" aria-hidden="true"></i>Change Topic Name</a>
+                        </li>
+                        <li>
                             <a href="alternative" class="waves-effect"><i class="m-r-10" aria-hidden="true"></i>Alternative</a>
                         </li>
                         <li>

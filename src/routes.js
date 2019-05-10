@@ -6,6 +6,7 @@ import Figure from './components/Figure';
 import Result from './components/Result';
 import Evaluation from './components/Evaluation';
 import NewTopic from './components/NewTopic';
+import GantiNama from './components/GantiNama';
 export default [
 //Home Naon Naon
   {path: '/', component: Home},
@@ -16,4 +17,5 @@ export default [
   {path: '/result', component: Result},
   {path: '/evaluation', component: Evaluation},
   {path: '/new', component: NewTopic},
+  {path: '/change', component: GantiNama},
 ]
