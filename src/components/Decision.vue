@@ -80,6 +80,7 @@
                     v-for="(data2,index_expert) in experts()"
                     v-bind:key="index_expert"
                   >
+                  {{data2.decision[index_alter].symbol || "-"}}<br>
                     <select
                       type="text"
                       class="form-control"
