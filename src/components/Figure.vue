@@ -174,7 +174,7 @@
                   </thead>
                   <tbody>
                     <tr>
-                      <td>= {{this.fuzzy.ik}}</td>
+                      <td><h2>{{isNaN(this.fuzzy.ik)? "∞":this.fuzzy.ik}}</h2></td>
                     </tr>
                   </tbody>
                 </table>

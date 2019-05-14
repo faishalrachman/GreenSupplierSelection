@@ -31,8 +31,8 @@
               style="text-align: center;overflow-x: scroll;display:block;width:100%"
             >
               <thead>
-                <tr >
-                  <th></th>
+                <tr>
+                  <!-- <th></th> -->
                   <th class="text-center" v-bind:colspan="topic.alternatives.length+2">Alternative</th>
                 </tr>
                 <tr>
@@ -45,11 +45,12 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="(data, index) in nama" v-bind:key="index">
-                  <td>
-                    {{data}}
-                  </td>
-                  <td v-for="(data2, index2) in fuzzy[index]" v-bind:key="index2">{{isNaN(data2.ik) ? "∞" : data2.ik}}</td>
+                <tr v-for="(data, index) in criterias" v-bind:key="index">
+                  <td>{{data.symbol}}</td>
+                  <td
+                    v-for="(data2,index2) in data.fuzzy"
+                    v-bind:key="index2"
+                  >{{isNaN(data2.ik) ? "∞" : data2.system_area}}</td>
                 </tr>
               </tbody>
             </table>
@@ -393,7 +394,8 @@ export default {
         selectedSubCriteria: 0
       },
       fuzzy: [],
-      nama: []
+      nama: [],
+      criterias: []
     };
   },
   methods: {
@@ -427,65 +429,85 @@ export default {
         return this.topic.criterias[a];
       }
     },
-    loadCriteria(){
-      
-    }
+    loadCriteria() {}
   },
   created() {
     console.log(this.topic.criterias[0].sub_criterias);
-    var fuzzy = {
-      system_range_grade: {
-        atfn_x: [4, 4.5, 5],
-        atfn_y: [0, 1, 0]
-      },
-      design_range: {
-        symbol: "ALAB",
-        tfn_x: [2.5, 10, 10],
-        tfn_y: [0, 1, 0]
-      },
-      area: {
-        x: [4, 4.107, 4.84, 5],
-        y: [0, 0.214, 0.32, 0]
-      },
-      ip: [1, 2],
-      ipy: [0, 1],
-      system_area: 12312312312,
-      common: 123123123,
-      ik: 123123123
-    };
     this.topic = this.$session.get("topic");
-    this.topic.criterias.forEach(criteria => {
-      if (criteria["sub_criterias"] == null) {
-        criteria["sub_criterias"] = [];
+
+    for (var i in this.topic.criterias) {
+      var criteria = this.topic.criterias[i];
+      if (criteria.sub_criterias.length > 0) {
+        for (var j in criteria.sub_criterias) {
+          var sub = criteria.sub_criterias[j];
+          this.criterias.push(sub);
+        }
+      } else {
+        this.criterias.push(criteria);
       }
-      if (criteria.sub_criterias.length == 0) {
-        criteria["fuzzy"] = [];
-        for (var i = 0; i < this.topic.alternatives.length; i++) {
+    }
+    for (var i in this.criterias) {
+      var criteria = this.criterias[i];
+      criteria['fuzzy'] = []
+      for (var i = 0; i < this.topic.alternatives.length; i++) {
+        var fuzzy = {
+          system_range_grade: {
+            atfn_x: [0, 0, 0],
+            atfn_y: [0, 1, 0]
+          },
+          design_range: {
+            symbol: "ALAB",
+            tfn_x: [0, 0, 0],
+            tfn_y: [0, 1, 0]
+          },
+          area: {
+            x: [0, 0, 0, 0],
+            y: [0, 0, 0, 0]
+          },
+          ip: [0, 0],
+          ipy: [0, 0],
+          system_area: 0,
+          common: 0,
+          ik: NaN
+        }
           fuzzy.system_range_grade = rumus.aggregate_tfn(criteria.experts, i);
           fuzzy.design_range = criteria.design_range;
           fuzzy = rumus.intersection_point(fuzzy);
-          criteria.fuzzy.push(fuzzy);
-        }
-        this.nama.push(criteria.symbol)
-        this.fuzzy.push(criteria.fuzzy)
-      } else {
-        criteria.sub_criterias.forEach(sub_criteria => {
-          sub_criteria["fuzzy"] = [];
-          for (var i = 0; i < this.topic.alternatives.length; i++) {
-            fuzzy.system_range_grade = rumus.aggregate_tfn(
-              sub_criteria.experts,
-              i
-            );
-            fuzzy.design_range = sub_criteria.design_range;
-            fuzzy = rumus.intersection_point(fuzzy);
-            sub_criteria.fuzzy.push(fuzzy);
-            topic_model.setTopic(this.topic.topic_id, this.topic);
-          }
-          this.nama.push(sub_criteria.symbol)
-          this.fuzzy.push(sub_criteria.fuzzy)
-        });
+          criteria.fuzzy.push(fuzzy)
       }
-    });
+    }
+    // this.topic.criterias.forEach(criteria => {
+    //   if (criteria["sub_criterias"] == null) {
+    //     criteria["sub_criterias"] = [];
+    //   }
+    //   if (criteria.sub_criterias.length == 0) {
+    //     criteria["fuzzy"] = [];
+    //     for (var i = 0; i < this.topic.alternatives.length; i++) {
+    //       fuzzy.system_range_grade = rumus.aggregate_tfn(criteria.experts, i);
+    //       fuzzy.design_range = criteria.design_range;
+    //       fuzzy = rumus.intersection_point(fuzzy);
+    //       criteria.fuzzy.push(fuzzy);
+    //     }
+    //     this.nama.push(criteria.symbol)
+    //     this.fuzzy.push(criteria.fuzzy)
+    //   } else {
+    //     criteria.sub_criterias.forEach(sub_criteria => {
+    //       sub_criteria["fuzzy"] = [];
+    //       for (var i = 0; i < this.topic.alternatives.length; i++) {
+    //         fuzzy.system_range_grade = rumus.aggregate_tfn(
+    //           sub_criteria.experts,
+    //           i
+    //         );
+    //         fuzzy.design_range = sub_criteria.design_range;
+    //         fuzzy = rumus.intersection_point(fuzzy);
+    //         sub_criteria.fuzzy.push(fuzzy);
+    //         topic_model.setTopic(this.topic.topic_id, this.topic);
+    //       }
+    //       this.nama.push(sub_criteria.symbol)
+    //       this.fuzzy.push(sub_criteria.fuzzy)
+    //     });
+    //   }
+    // });
   }
 };
 </script>
