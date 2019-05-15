@@ -47,8 +47,7 @@
               </div>
               <div v-if="topic.alternatives.length > 0">
                 <label class="m-t-30">Alternative</label>
-                <select class="form-control"
-                v-model="menu.selectedAlternative">
+                <select class="form-control" v-model="menu.selectedAlternative">
                   <option
                     v-for="(alternative, index) in topic.alternatives"
                     v-bind:value="index"
@@ -120,7 +119,7 @@
             </div>
             <div class="col-md-12">
               <div class="col-md-4 d-inline-flex">
-                <table class="table" style="text-align: center;" >
+                <table class="table" style="text-align: center;">
                   <thead>
                     <tr>
                       <th class="text-center" colspan="2">Intersecting Point</th>
@@ -174,7 +173,9 @@
                   </thead>
                   <tbody>
                     <tr>
-                      <td><h2>{{isNaN(this.fuzzy.ik)? "∞":this.fuzzy.ik}}</h2></td>
+                      <td>
+                        <h2>{{isNaN(this.fuzzy.ik)? "∞":this.fuzzy.ik}}</h2>
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -519,7 +520,7 @@ export default {
       menu: {
         selectedCriteria: 0,
         selectedSubCriteria: 0,
-        selectedAlternative: 0,
+        selectedAlternative: 0
       },
       fuzzy: {
         system_range_grade: {
@@ -536,7 +537,7 @@ export default {
           y: [0, 0.214, 0.32, 0]
         },
         ip: [1, 2],
-        ipy: [0,1],
+        ipy: [0, 1],
         system_area: 12312312312,
         common: 123123123,
         ik: 123123123
@@ -556,23 +557,25 @@ export default {
     dataCriteria() {
       var a = this.menu.selectedCriteria;
       var b = this.menu.selectedSubCriteria;
-      console.log(b)
+      console.log(b);
       if (this.topic.criterias[a].sub_criterias.length > 0) {
-        console.log(this.topic.criterias[a].sub_criterias[b].sub_criteria)
+        console.log(this.topic.criterias[a].sub_criterias[b].sub_criteria);
         return this.topic.criterias[a].sub_criterias[b];
       } else {
-        console.log(this.topic.criterias[a].criteria)
+        console.log(this.topic.criterias[a].criteria);
         return this.topic.criterias[a];
       }
-      
     },
     intersection_point() {
       $("#myFigure").show();
-      this.fuzzy.system_range_grade = rumus.aggregate_tfn(this.experts(),this.menu.selectedAlternative)
-      this.fuzzy.design_range = this.dataCriteria().design_range
-      console.log(this.fuzzy.system_range_grade)
+      this.fuzzy.system_range_grade = rumus.aggregate_tfn(
+        this.experts(),
+        this.menu.selectedAlternative
+      );
+      this.fuzzy.design_range = this.dataCriteria().design_range;
+      console.log(this.fuzzy.system_range_grade);
       this.fuzzy = rumus.intersection_point(this.fuzzy);
-      console.log(this.fuzzy)
+      console.log(this.fuzzy);
       var trace1 = {
         x: this.fuzzy.system_range_grade.atfn_x,
         y: this.fuzzy.system_range_grade.atfn_y,
@@ -586,7 +589,7 @@ export default {
         type: "scatter",
         name: "Design Range"
       };
-      
+
       var trace3 = {
         x: this.fuzzy.area.x,
         y: this.fuzzy.area.y,

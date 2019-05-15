@@ -44,42 +44,42 @@ export default {
         
         //cek benefit
         if (qx == 10 && rx == 10) {
-            console.log("Benefit euy");
+            //console.log("Benefit euy");
             jenis = "benefit";
             if (ax > px && bx > px && cx > px) {
-                console.log("trapesium");
+                //console.log("trapesium");
                 bentuk = "trapesium";
             } else if (bx == qx && cx == rx && ax <= px) {
-                console.log("SPK");
+                //console.log("SPK");
                 bentuk = "SPK";
             } else if (ax == px && bx == qx && ax > px) {
-                console.log("SPL");
+                //console.log("SPL");
                 bentuk = "SPL";
             } else if (cx <= px) {
-                console.log("GA ADA PERPOTONGAN");
+                //console.log("GA ADA PERPOTONGAN");
                 bentuk = "NO";
             } else {
-                console.log("SS");
+                //console.log("SS");
                 bentuk = "SS";
             }
         } else {
-            console.log("Cost euy");
+            //console.log("Cost euy");
             jenis = "cost";
             if (ax == px && bx == qx && cx <= rx) {
-                console.log("SPK");
+                //console.log("SPK");
                 bentuk = "SPK";
             } else if (ax == px && bx == qx && cx > rx) {
-                console.log("SPL");
+                //console.log("SPL");
                 bentuk = "SPL";
             } else if (ax < rx && bx < rx && cx < rx) {
-                console.log("trapesium");
+                //console.log("trapesium");
                 bentuk = "trapesium";
             } else if (ax <= rx) {
                 bentuk = "SS";
-                console.log("SS");
+                //console.log("SS");
             } else {
                 bentuk = "NO";
-                console.log("GA ADA PERPOTONGAN");
+                //console.log("GA ADA PERPOTONGAN");
             }
         }
         var m1 = (ay - by) / (ax - bx)
@@ -91,7 +91,7 @@ export default {
         var c3 = qy - (m3 * qx)
         var c4 = ry - (m4 * rx)
         var system_area = (cx - ax) / 2
-        console.log("System Area: " + system_area)
+        //console.log("System Area: " + system_area)
         
         switch (bentuk) {
             case "trapesium":
@@ -107,8 +107,8 @@ export default {
                         var y2 = integres(m2, c2, cx, ip2)
                         var y4 = integres(m4, c4, ip2, ip1)
                         var ca = y1 + y2 + y4
-                        console.log(ip1 + ":" + ip2)
-                        console.log("Common area: " + ca)
+                        //console.log(ip1 + ":" + ip2)
+                        //console.log("Common area: " + ca)
         
                     } else {
                         var ip1 = (c3 - c1) / (m1 - m3)
@@ -116,14 +116,14 @@ export default {
                         var ipy1 = m1*ip1+c1
                         var ipy2 = m2*ip2+c2
                         
-                        console.log(ip1 + ":" + ip2)
+                        //console.log(ip1 + ":" + ip2)
         
                         var y1 = integres(m1, c1, ip1, ax)
                         var y2 = integres(m2, c2, cx, ip2)
                         var y3 = integres(m3, c3, ip2, ip1)
                         var ca = y1 + y2 + y3
-                        console.log(ip1 + ":" + ip2)
-                        console.log("Common area: " + ca)
+                        //console.log(ip1 + ":" + ip2)
+                        //console.log("Common area: " + ca)
                     }
                     data.area.x = [ax, ip1,ip2,cx]
                     data.area.y = [ay, ipy1,ipy2,cy]
@@ -140,40 +140,40 @@ export default {
                         var y1 = integres(m1, c1, ip1, ax)
                         var y4 = integres(m4, c4, rx, ip1)
                         var ca = y1 + y4
-                        console.log(ip1)
-                        console.log("Common area: " + ca)
+                        //console.log(ip1)
+                        //console.log("Common area: " + ca)
                     } else {
                         
                         var ip1 = (c3 - c2) / (m2 - m3)
-                        console.log("IPna = "+ip1)
+                        //console.log("IPna = "+ip1)
                         var ipy1 = m3*ip1+c3
-                        console.log("IPY = "+ipy1)
+                        //console.log("IPY = "+ipy1)
                         data.area.x = [px, ip1,cx]
                         data.area.y = [py, ipy1,cy]
                         var y2 = integres(m2, c2, cx, ip1)
                         var y3 = integres(m3, c3, ip1, px)
                         var ca = y2 + y3
-                        console.log(ip1)
-                        console.log("Common area: " + ca)
+                        //console.log(ip1)
+                        //console.log("Common area: " + ca)
                     }
                     break;
                 }
             case "SPK":
                 {
-                    console.log("tidak ada IP")
+                    //console.log("tidak ada IP")
         
                     if (jenis === "cost") {
                         var y2 = integres(m2, c2, cx, bx)
                         data.area.x = [ax, bx,cx]
                         data.area.y = [ay, by,cy]
                         var ca = y2
-                        console.log("Common area: " + y2)
-                        console.log(m2 +":"+c2 +":"+cx +":"+bx)
+                        //console.log("Common area: " + y2)
+                        //console.log(m2 +":"+c2 +":"+cx +":"+bx)
                         
                     } else {
                         var y3 = integres(m3, c3, qx, px)
                         var ca = y3
-                        console.log("Common area: " + y3)
+                        //console.log("Common area: " + y3)
                         data.area.x = [px, qx,cx]
                         data.area.y = [py, qy,cy]
         
@@ -182,17 +182,17 @@ export default {
                 }
             case "SPL":
                 {
-                    console.log("tidak ada IP")
+                    //console.log("tidak ada IP")
         
                     if (jenis === "cost") {
                         var ca = integres(m4, c4, rx, qx)
-                        console.log("Common area: " + ca)
+                        //console.log("Common area: " + ca)
                         data.area.x = [ax, bx,rx]
                         data.area.y = [ay, by,ry]
         
                     } else {
                         var ca = integres(m1, c1, bx, ax)
-                        console.log("Common area: " + ca)
+                        //console.log("Common area: " + ca)
                         data.area.x = [ax, qx,cx]
                         data.area.y = [ay, qy,cy]
                     }
@@ -200,7 +200,7 @@ export default {
                 }
             default:
                 {
-                    console.log("tidak ada IP")
+                    //console.log("tidak ada IP")
                     data.area.x = [0, 0,0]
                     data.area.y = [0, 0,0]
                 }
@@ -215,13 +215,13 @@ export default {
         data.ipy[1] = ipy2 || null
             
         var ik = Math.log2(system_area / ca)
-        console.log("Informesen Konten :" + ik)
+        //console.log("Informesen Konten :" + ik)
         data.ik = ik
         data.common = ca
         data.system_area = system_area
 
         
-        console.log(data)
+        //console.log(data)
         return data
     },
     aggregate_tfn(expertData, index_alter){

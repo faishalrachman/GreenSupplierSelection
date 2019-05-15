@@ -52,7 +52,7 @@
                     {{criteria.symbol}} - {{criteria.sub_criteria || criteria.criteria}}
                   </td>
                   <td>
-                    {{criteria.system_range_grade[0].evaluation}}
+                    {{criteria.experts[0].decision[menu.selectedAlternative].evaluation}}
                   </td>
                   </tr>
               </tbody>

@@ -32,7 +32,6 @@
             >
               <thead>
                 <tr>
-                  <!-- <th></th> -->
                   <th class="text-center" v-bind:colspan="topic.alternatives.length+2">Alternative</th>
                 </tr>
                 <tr>
@@ -53,8 +52,12 @@
                   >{{isNaN(data2.ik) ? "∞" : data2.ik.toFixed(3)}}</td>
                 </tr>
                 <tr>
-                  <td>Total</td>
-                  <td v-for="(data,index) in sum" v-bind:key="index">{{isNaN(data) ? "∞" : data.toFixed(3)}}</td>
+                   <th class="text-center">Total</th>
+                  <th class="text-center" v-for="(data,index) in sum" v-bind:key="index">{{isNaN(data) ? "∞" : data.toFixed(3)}}</th>
+                </tr>
+                <tr>
+                  <th class="text-center">Ranking</th>
+                  <th class="text-center" v-for="(data,index) in ranking" v-bind:key="index"><b>{{isNaN(data) ? "∞" : data.toFixed(0)}}</b></th>
                 </tr>
               </tbody>
             </table>
@@ -398,6 +401,7 @@ export default {
         selectedSubCriteria: 0
       },
       sum: [],
+      ranking: [],
       nama: [],
       criterias: []
     };
@@ -452,6 +456,7 @@ export default {
     
     for (var i = 0; i < this.topic.alternatives.length; i++) {
       this.sum.push(0);
+      this.ranking.push(0);
     }
 
     for (var i in this.criterias) {
@@ -485,6 +490,16 @@ export default {
           this.sum[i] += fuzzy.ik
       }
     }
+    var filtered = this.sum.slice(0)
+    for (var i = 0; i<filtered.length;i++){
+      if (isNaN(filtered[i])){
+        filtered[i] = 99999999+i;
+      }
+    }
+
+    var sorted = filtered.slice().sort(function(a,b){return a-b})
+    this.ranking = filtered.slice().map(function(v){ return sorted.indexOf(v)+1 });
+    
 
     // this.topic.criterias.forEach(criteria => {
     //   if (criteria["sub_criterias"] == null) {
