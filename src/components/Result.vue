@@ -50,7 +50,11 @@
                   <td
                     v-for="(data2,index2) in data.fuzzy"
                     v-bind:key="index2"
-                  >{{isNaN(data2.ik) ? "∞" : data2.system_area}}</td>
+                  >{{isNaN(data2.ik) ? "∞" : data2.ik.toFixed(3)}}</td>
+                </tr>
+                <tr>
+                  <td>Total</td>
+                  <td v-for="(data,index) in sum" v-bind:key="index">{{isNaN(data) ? "∞" : data.toFixed(3)}}</td>
                 </tr>
               </tbody>
             </table>
@@ -393,7 +397,7 @@ export default {
         selectedCriteria: 0,
         selectedSubCriteria: 0
       },
-      fuzzy: [],
+      sum: [],
       nama: [],
       criterias: []
     };
@@ -429,7 +433,6 @@ export default {
         return this.topic.criterias[a];
       }
     },
-    loadCriteria() {}
   },
   created() {
     console.log(this.topic.criterias[0].sub_criterias);
@@ -446,6 +449,11 @@ export default {
         this.criterias.push(criteria);
       }
     }
+    
+    for (var i = 0; i < this.topic.alternatives.length; i++) {
+      this.sum.push(0);
+    }
+
     for (var i in this.criterias) {
       var criteria = this.criterias[i];
       criteria['fuzzy'] = []
@@ -474,8 +482,10 @@ export default {
           fuzzy.design_range = criteria.design_range;
           fuzzy = rumus.intersection_point(fuzzy);
           criteria.fuzzy.push(fuzzy)
+          this.sum[i] += fuzzy.ik
       }
     }
+
     // this.topic.criterias.forEach(criteria => {
     //   if (criteria["sub_criterias"] == null) {
     //     criteria["sub_criterias"] = [];
