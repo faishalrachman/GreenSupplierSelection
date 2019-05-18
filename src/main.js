@@ -5,10 +5,12 @@ import VueRouter from 'vue-router'
 import Routes from './routes'
 import VueSession from 'vue-session'
 import VueSwal from 'vue-swal'
+import Print from 'vue-print-nb'
 
 Vue.use(VueSwal)
 Vue.use(VueRouter);
 Vue.use(VueSession)
+Vue.use(Print)
 
 Vue.prototype.$window = window
 Vue.config.productionTip = false

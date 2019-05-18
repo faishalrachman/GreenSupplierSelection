@@ -33,13 +33,14 @@
           <div class="card-block">
             <div class="col-md-4">
               <label>Select Alternative</label>
-            <select class="form-control" v-model="menu.selectedAlternative">
+                 <select class="form-control" v-model="menu.selectedAlternative">
                   <option>-</option>
                   <option v-for="(data,index) in topic.alternatives" v-bind:key="index" v-bind:value="index">{{data.symbol}}-{{data.alternative}}</option>
                 </select>
                 </div>
             <div class="col-md-12">
-            <table class="table m-t-30" style="text-align: center;">
+            <button v-print="'#printTable'" class="m-t-10 btn btn-primary pull-left">Print</button>
+            <table id="printTable" class="table m-t-30" style="text-align: center;">
               <thead>
                 <tr>
                   <th class="text-center">Criteria / Sub-Criteria</th>

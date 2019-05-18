@@ -26,7 +26,9 @@
       <div class="col-md-12">
         <div class="card">
           <div class="card-block">
+            <button v-print="'#printTable'" class="btn btn-primary pull-left">Print</button>
             <table
+            id="printTable"
               class="table"
               style="text-align: center;overflow-x: scroll;display:block;width:100%"
             >

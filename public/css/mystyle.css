@@ -22,3 +22,7 @@ input.small-box{
 .m-5{
     margin-left: 10px;
 }
+/* @media print{
+    *{ display: none; }
+    table { display: block; }
+  } */
